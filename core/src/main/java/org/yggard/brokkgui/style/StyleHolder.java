@@ -23,4 +23,11 @@ public class StyleHolder
         else
             return null;
     }
+
+    public void setStyle(String key, Object value)
+    {
+        if (key == null || key.isEmpty())
+            throw new IllegalArgumentException("key not valid");
+        this.propreties.put(key, value);
+    }
 }
