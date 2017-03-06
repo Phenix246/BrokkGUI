@@ -16,6 +16,8 @@ public class StyleHolder
 
     public Object getStyle(String key)
     {
+        if (key == null || key.isEmpty())
+            throw new IllegalArgumentException("key not valid");
         if (this.propreties.containsKey(key))
             return this.propreties.get(key);
         else if (this.parent != null && this.parent.getStyleHolder() != null)
