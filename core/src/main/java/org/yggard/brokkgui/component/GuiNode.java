@@ -12,27 +12,39 @@ import org.yggard.brokkgui.event.HoverEvent;
 import org.yggard.brokkgui.event.KeyEvent;
 import org.yggard.brokkgui.internal.IGuiRenderer;
 import org.yggard.brokkgui.paint.EGuiRenderPass;
+import org.yggard.brokkgui.style.IStyleable;
+import org.yggard.brokkgui.style.StyleHolder;
 import org.yggard.hermod.EventDispatcher;
 import org.yggard.hermod.EventHandler;
 import org.yggard.hermod.IEventEmitter;
 
+import fr.ourten.teabeans.value.BaseListProperty;
 import fr.ourten.teabeans.value.BaseProperty;
+import fr.ourten.teabeans.value.ListProperty;
 
-public abstract class GuiNode implements IEventEmitter
+public abstract class GuiNode implements IEventEmitter, IStyleable
 {
-    private final BaseProperty<GuiFather> fatherProperty;
-    private final BaseProperty<Float>     xPosProperty, yPosProperty, xTranslateProperty, yTranslateProperty,
+    private final BaseProperty<GuiFather>  fatherProperty;
+    private final BaseProperty<Float>      xPosProperty, yPosProperty, xTranslateProperty, yTranslateProperty,
             widthProperty, heightProperty, widthRatioProperty, heightRatioProperty, zLevelProperty;
 
-    private EventDispatcher               eventDispatcher;
-    private EventHandler<FocusEvent>      onFocusEvent;
-    private EventHandler<DisableEvent>    onDisableEvent;
-    private EventHandler<HoverEvent>      onHoverEvent;
-    private EventHandler<ClickEvent>      onClickEvent;
-    private final BaseProperty<Boolean>   focusedProperty, disabledProperty, hoveredProperty, focusableProperty;
+    // Style
+    private final BaseProperty<String>     idProperty;
+    private final BaseListProperty<String> classProperty;
+    private StyleHolder                    styleGolder;
+
+    private EventDispatcher                eventDispatcher;
+    private EventHandler<FocusEvent>       onFocusEvent;
+    private EventHandler<DisableEvent>     onDisableEvent;
+    private EventHandler<HoverEvent>       onHoverEvent;
+    private EventHandler<ClickEvent>       onClickEvent;
+    private final BaseProperty<Boolean>    focusedProperty, disabledProperty, hoveredProperty, focusableProperty;
 
     public GuiNode()
     {
+        this.idProperty = new BaseProperty<>("", "idProperty");
+        this.classProperty = new BaseListProperty<>(null);
+
         this.xPosProperty = new BaseProperty<>(0f, "xPosProperty");
         this.yPosProperty = new BaseProperty<>(0f, "yPosProperty");
 
@@ -166,6 +178,16 @@ public abstract class GuiNode implements IEventEmitter
     public BaseProperty<Float> getHeightRatioProperty()
     {
         return this.heightRatioProperty;
+    }
+
+    public BaseProperty<String> getIDProperty()
+    {
+        return this.idProperty;
+    }
+
+    public BaseListProperty<String> getClassProperty()
+    {
+        return this.classProperty;
     }
 
     /**
@@ -453,5 +475,34 @@ public abstract class GuiNode implements IEventEmitter
     private void initEventDispatcher()
     {
         this.eventDispatcher = new EventDispatcher();
+    }
+
+    public void setID(final String id)
+    {
+        this.getIDProperty().setValue(id);
+    }
+
+    @Override
+    public String getID()
+    {
+        return this.getIDProperty().getValue();
+    }
+
+    @Override
+    public ListProperty<String> getStyleClasses()
+    {
+        return this.getClassProperty();
+    }
+
+    @Override
+    public StyleHolder getStyleHolder()
+    {
+        return this.styleGolder;
+    }
+
+    @Override
+    public void setStyle(StyleHolder style)
+    {
+        this.styleGolder = style;
     }
 }
