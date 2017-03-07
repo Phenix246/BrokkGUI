@@ -5,11 +5,13 @@ import fr.ourten.teabeans.value.MapProperty;
 
 public class StyleHolder
 {
+    private final IStyleable                  container;
     private final IStyleable                  parent;
     private final MapProperty<String, Object> propreties;
 
-    public StyleHolder(IStyleable parent)
+    public StyleHolder(IStyleable container, IStyleable parent)
     {
+        this.container = container;
         this.parent = parent;
         this.propreties = new BaseMapProperty<>(null);
     }
