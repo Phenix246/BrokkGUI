@@ -36,6 +36,9 @@ public class GuiLabeledSkinBase<C extends GuiLabeled, B extends GuiBehaviorBase<
 
         this.text = new Text(model.getText());
 
+        // Style
+        text.getStyleHolder().setParent(model.getStyleHolder().getContainer());
+
         this.textPaddingProperty = new BaseProperty<>(0f, "textPaddingProperty");
         this.textPaddingAlignmentProperty = new BaseProperty<>(EHAlignment.CENTER, "textPaddingAlignmentProperty");
 
@@ -47,8 +50,6 @@ public class GuiLabeledSkinBase<C extends GuiLabeled, B extends GuiBehaviorBase<
         this.text.getTextStyleProperty().bind(model.getTextStyleProperty());
 
         this.text.getTextProperty().bind(this.ellipsedTextProperty);
-
-        this.text.getzLevelProperty().bind(model.getzLevelProperty());
 
         this.text.getxPosProperty().bind(new BaseBinding<Float>()
         {

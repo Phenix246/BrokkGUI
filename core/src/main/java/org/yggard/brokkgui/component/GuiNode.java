@@ -14,6 +14,7 @@ import org.yggard.brokkgui.internal.IGuiRenderer;
 import org.yggard.brokkgui.paint.EGuiRenderPass;
 import org.yggard.brokkgui.style.IStyleable;
 import org.yggard.brokkgui.style.StyleHolder;
+import org.yggard.brokkgui.style.StyleProperty;
 import org.yggard.hermod.EventDispatcher;
 import org.yggard.hermod.EventHandler;
 import org.yggard.hermod.IEventEmitter;
@@ -26,12 +27,13 @@ public abstract class GuiNode implements IEventEmitter, IStyleable
 {
     private final BaseProperty<GuiFather>  fatherProperty;
     private final BaseProperty<Float>      xPosProperty, yPosProperty, xTranslateProperty, yTranslateProperty,
-            widthProperty, heightProperty, widthRatioProperty, heightRatioProperty, zLevelProperty;
+            widthProperty, heightProperty, widthRatioProperty, heightRatioProperty;
+    // zLevelProperty;
 
     // Style
     private final BaseProperty<String>     idProperty;
     private final BaseListProperty<String> classProperty;
-    private StyleHolder                    styleGolder;
+    private StyleHolder                    styleHolder;
 
     private EventDispatcher                eventDispatcher;
     private EventHandler<FocusEvent>       onFocusEvent;
@@ -44,6 +46,16 @@ public abstract class GuiNode implements IEventEmitter, IStyleable
     {
         this.idProperty = new BaseProperty<>("", "idProperty");
         this.classProperty = new BaseListProperty<>(null);
+        this.styleHolder = new StyleHolder(this);
+
+        // translate-x
+        // translate-y
+        // width
+        // height
+        // width-ratio
+        // height-radio
+        // z-level
+        this.styleHolder.addStyle("z-level", new StyleProperty<Integer>(0, "zLevelProperty"));
 
         this.xPosProperty = new BaseProperty<>(0f, "xPosProperty");
         this.yPosProperty = new BaseProperty<>(0f, "yPosProperty");
@@ -56,8 +68,6 @@ public abstract class GuiNode implements IEventEmitter, IStyleable
 
         this.widthRatioProperty = new BaseProperty<>(-1f, "widthRatioProperty");
         this.heightRatioProperty = new BaseProperty<>(-1f, "heightRatioProperty");
-
-        this.zLevelProperty = new BaseProperty<>(0f, "zLevelProperty");
 
         this.fatherProperty = new BaseProperty<>(null, "fatherProperty");
 
@@ -125,19 +135,20 @@ public abstract class GuiNode implements IEventEmitter, IStyleable
                 && pointY < this.getyPos() + this.getyTranslate() + this.getHeight();
     }
 
-    public BaseProperty<Float> getzLevelProperty()
+    @SuppressWarnings("unchecked")
+    public StyleProperty<Integer> getzLevelProperty()
     {
-        return this.zLevelProperty;
+        return (StyleProperty<Integer>) this.styleHolder.getStyle("z-level");
     }
 
-    public float getzLevel()
+    public int getzLevel()
     {
-        return this.getzLevelProperty().getValue();
+        return (int) this.styleHolder.getStyle("z-level").getValue();
     }
 
-    public void setzLevel(final float zLevel)
+    public void setzLevel(final int zLevel)
     {
-        this.getzLevelProperty().setValue(zLevel);
+        getzLevelProperty().setValue(zLevel);
     }
 
     public BaseProperty<Float> getxPosProperty()
@@ -497,12 +508,12 @@ public abstract class GuiNode implements IEventEmitter, IStyleable
     @Override
     public StyleHolder getStyleHolder()
     {
-        return this.styleGolder;
+        return this.styleHolder;
     }
 
     @Override
     public void setStyle(StyleHolder style)
     {
-        this.styleGolder = style;
+        this.styleHolder = style;
     }
 }

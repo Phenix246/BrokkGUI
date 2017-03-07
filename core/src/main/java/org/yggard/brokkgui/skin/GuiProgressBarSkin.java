@@ -17,6 +17,10 @@ public class GuiProgressBarSkin<C extends GuiProgressBar, B extends GuiBehaviorB
         super(model, behaviour);
 
         this.progressBar = new Rectangle(model.getxPos(), model.getyPos(), model.getWidth(), model.getHeight());
+
+        // Style
+        progressBar.getStyleHolder().setParent(model.getStyleHolder().getContainer());
+
         this.progressBar.getxPosProperty().bind(new BaseExpression<>(() ->
         {
             switch (model.getProgressDirection())
@@ -50,6 +54,7 @@ public class GuiProgressBarSkin<C extends GuiProgressBar, B extends GuiBehaviorB
         }, model.getyPosProperty(), model.getHeightProperty()));
 
         this.getText().getTextAlignmentProperty().bind(model.getTextAlignmentProperty());
+
         this.getText().getzLevelProperty().bind(new BaseExpression<>(() ->
         {
             return model.getzLevel() + 1;

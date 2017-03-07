@@ -5,18 +5,17 @@ import fr.ourten.teabeans.value.MapProperty;
 
 public class StyleHolder
 {
-    private final IStyleable                  container;
-    private final IStyleable                  parent;
-    private final MapProperty<String, Object> propreties;
+    private final IStyleable                            container;
+    private IStyleable                                  parent;
+    private final MapProperty<String, StyleProperty<?>> propreties;
 
-    public StyleHolder(IStyleable container, IStyleable parent)
+    public StyleHolder(final IStyleable container)
     {
         this.container = container;
-        this.parent = parent;
         this.propreties = new BaseMapProperty<>(null);
     }
 
-    public Object getStyle(String key)
+    public StyleProperty<?> getStyle(final String key)
     {
         if (key == null || key.isEmpty())
             throw new IllegalArgumentException("key not valid");
@@ -28,7 +27,7 @@ public class StyleHolder
             return null;
     }
 
-    public void setStyle(String key, Object value)
+    public void addStyle(final String key, final StyleProperty<?> value)
     {
         if (key == null || key.isEmpty())
             throw new IllegalArgumentException("key not valid");
@@ -43,5 +42,10 @@ public class StyleHolder
     public IStyleable getParent()
     {
         return this.parent;
+    }
+
+    public void setParent(final IStyleable parent)
+    {
+        this.parent = parent;
     }
 }
