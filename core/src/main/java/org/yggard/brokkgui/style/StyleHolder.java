@@ -34,4 +34,14 @@ public class StyleHolder
             throw new IllegalArgumentException("key not valid");
         this.propreties.put(key, value);
     }
+
+    public IStyleable getContainer()
+    {
+        return this.container;
+    }
+
+    public IStyleable getParent()
+    {
+        return this.parent;
+    }
 }
